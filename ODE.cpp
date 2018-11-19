@@ -86,8 +86,6 @@ int main()
 
 }
 
-// double funcionprime(t,X,X_prime);
-
 double funcion_xprime(double t, double x,double x_prime)
 {
     return x_prime;
@@ -112,62 +110,3 @@ double funcion_V(double vx, double vy)
 {
     return pow(vx*vx+vy*vy,0.5);
 }
-
-
-// double runge_kutta(){
-
-// }
-
-    
-    //runge kutta
-//     int i=0;
-    
-//     for(i=0;i<n_pts;i++) {
-//         double k1=h*funcionprime(x[i-1],y[i-1]);
-    
-//         double k2x=h*funcionprime(x[i-1]+0.5*h,y[i-1]+0.5*k1);
-    
-//         double k3x=h*funcionprime(x[i-1]+0.5*h,y[i-1]+0.5*k2x);
-    
-//         double k4x=h*funcionprime(x[i-1]+h,y[i-1]+k3x);
-    
-//         double promedio_k = (k1 + 2.0*k2x + 2.0*k3x + k4x)/6.0;
-    
-//         t[i]=x[i-1]+h;
-
-//         x_1[i] = 
-
-
-//         y[i]=y[i-1]+promedio_k;
-
-//     }    
-// }
-
-
-
-
-
-
-// // separacion de la derivada y la solucion
-
-
-
-// double funcion1x(double t, double x, double dx, double y, double dy, double m, double c)
-// {
-//     return dx;
-// }
-
-// double funcion2x(double t, double x, double dx, double y, double dy, double m,double c)
-// {
-//     return -c*v(dx,dy)*dx/m;
-// }
-
-// double funcion1y(double t, double x, double dx, double y, double dy, double m, double c,double g)
-// {
-//     return dy;
-// }
-
-// double funcion2x(double t, double x, double dx, double y, double dy, double m,double c,double g)
-// {
-//     return -g-c*v(dx,dy)*dy/m;
-// }
