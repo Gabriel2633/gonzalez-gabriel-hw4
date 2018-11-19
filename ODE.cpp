@@ -28,30 +28,34 @@ int main() {
     double X=0;
     int ang = 45; //angulo
     double V = 300;
+    int n_steps = 100;
+    int i=0;
 
-    double k1=funcion_prime(t,X, V);
-    double k1prime=funcion_prime2(t,X, V);
-    
-    double k2=funcion_prime(t+0.5*h,X+0.5*k1*h,V+0.5*k1prime*h);
-    double k2prime=funcion_prime2(t+0.5*h,X+0.5*k1*h, V+0.5*k1prime*h);
+    for(i=0;i<n_steps;i++) {
 
-    double k3=funcion_prime(t+0.5*h,X+0.5*k2*h,V+0.5*k2prime*h);
-    double k3prime=funcion_prime2(t+0.5*h,X+0.5*k2*h, V+0.5*k2prime*h);
+        double k1=funcion_prime(t,X, V);
+        double k1prime=funcion_prime2(t,X, V);
+        
+        double k2=funcion_prime(t+0.5*h,X+0.5*k1*h,V+0.5*k1prime*h);
+        double k2prime=funcion_prime2(t+0.5*h,X+0.5*k1*h, V+0.5*k1prime*h);
 
-    double k4=funcion_prime(t+h,X+k3*h,V+k3prime*h);
-    double k4prime=funcion_prime2(t+h,X+k3*h, V+k3prime*h);
+        double k3=funcion_prime(t+0.5*h,X+0.5*k2*h,V+0.5*k2prime*h);
+        double k3prime=funcion_prime2(t+0.5*h,X+0.5*k2*h, V+0.5*k2prime*h);
 
-    double promedio_k=(1.0/6.0)*(k1 + 2.0*k2 + 2.0*k3 + k4);
-    double promedio_kprime=(1.0/6.0)*(k1prime + 2.0*k2prime + 2.0*k3prime + k4prime);
+        double k4=funcion_prime(t+h,X+k3*h,V+k3prime*h);
+        double k4prime=funcion_prime2(t+h,X+k3*h, V+k3prime*h);
 
-    X = X + h*promedio_k;
-    V = V + h*promedio_kprime;
-    t=t+h;
+        double promedio_k=(1.0/6.0)*(k1 + 2.0*k2 + 2.0*k3 + k4);
+        double promedio_kprime=(1.0/6.0)*(k1prime + 2.0*k2prime + 2.0*k3prime + k4prime);
 
-    cout<< "Tiempo recorrido: "<< t <<endl;
-    cout<< "Distancia recorrida: "<< X <<endl;
-    cout<< "Velocidad: "<< V <<endl;
+        X = X + h*promedio_k;
+        V = V + h*promedio_kprime;
+        t=t+h;
 
+        cout<< "Tiempo recorrido: "<< t <<endl;
+        cout<< "Distancia recorrida: "<< X <<endl;
+        cout<< "Velocidad: "<< V <<endl;
+    }
 
 }
 
