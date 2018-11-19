@@ -33,7 +33,6 @@ int main()
     double y=0;
     int ang = 45; //angulo
     double V0=300;
-    // double V = V0;
     int n_steps = 100000;
     int i=0;
 
@@ -97,7 +96,7 @@ double funcion_xprime(double t, double x,double x_prime)
 
 double funcion_xprime2(double t, double x, double x_prime, double y_prime)
 {
-    return -0-c*funcion_V(x_prime,y_prime)*x_prime/m;
+    return -c*funcion_V(x_prime,y_prime)*x_prime/m;
 }
 
 double funcion_yprime(double t, double y,double y_prime)
