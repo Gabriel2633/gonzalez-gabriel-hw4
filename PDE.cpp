@@ -16,7 +16,7 @@ using namespace std;
 
 #define N 50 //tamaño de matrix
 //constantes
-int k=1.62;   // conductividad termica
+double k=1.62;   // conductividad termica
 double cp=820; // calor especifico
 double rho=2710; // densidad
 double PI=3.14159265359; // PI
@@ -65,7 +65,7 @@ int main()
                     actual[i][j] = Tvarilla;
                 }
                 else {
-                    actual[i][j] = alpha*(anterior[i+1][j]+anterior[i][j+1])+(1-2*alpha)*anterior[i][j]+alpha*(anterior[i-1][j]+anterior[i][j-1]);
+                    actual[i][j] = alpha*(anterior[i+1][j]+anterior[i][j+1])+(1-4*alpha)*anterior[i][j]+alpha*(anterior[i-1][j]+anterior[i][j-1]);
                 }
             }
         }
