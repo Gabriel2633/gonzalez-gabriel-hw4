@@ -40,6 +40,8 @@ double actual[N][N];
 
 int main() 
 {
+
+    
     int i, j, k;
     //condiciones de frontera
     for(i=0; i<N; i++){
@@ -53,23 +55,38 @@ int main()
             }
         }
     }
+    
+    ofstream data_file;
+    string file_name="fijo.txt";
+    data_file.open(file_name);
 
-    // ecuacion diferencial parcial
-    for(i=0; i<N-1; i++){
-        for(j=0; j<N-1; j++){
-            if (i==0 || i==N-1 || j==0 || j==N-1 ){
-                actual[i][j] = Tfija;
-            } else {
-                double eqn_dif = pow(i*delta_x-0.5*l,2) + pow(j*delta_x-0.5*l,2);
-                if (eqn_dif < pow(d/2,2)){
-                    actual[i][j] = Tvarilla;
+    //equilibrio
+    double dif = 1;
+    double dif_equilibrio = 0.0001;
+    while(abs(dif)>dif_equilibrio){
+        // ecuacion diferencial parcial
+        for(i=0; i<N-1; i++){
+            for(j=0; j<N-1; j++){
+                if (i==0 || i==N-1 || j==0 || j==N-1 ){
+                    actual[i][j] = Tfija;
+                } else {
+                    double eqn_dif = pow(i*delta_x-0.5*l,2) + pow(j*delta_x-0.5*l,2);
+                    if (eqn_dif < pow(d/2,2)){
+                        actual[i][j] = Tvarilla;
+                    }
+                    else {
+                        actual[i][j] = alpha*(anterior[i+1][j]+anterior[i][j+1])+(1-4*alpha)*anterior[i][j]+alpha*(anterior[i-1][j]+anterior[i][j-1]);
+                    }
                 }
-                else {
-                    actual[i][j] = alpha*(anterior[i+1][j]+anterior[i][j+1])+(1-4*alpha)*anterior[i][j]+alpha*(anterior[i-1][j]+anterior[i][j-1]);
-                }
+                data_file << anterior[i][j] << ",";
             }
+            data_file << endl;
         }
-    } 
+
+        //asignar valores de actual anterior para proxima iteracion 
+        memcpy(anterior,actual,sizeof(actual));
+    }
+    
 
 
 }
