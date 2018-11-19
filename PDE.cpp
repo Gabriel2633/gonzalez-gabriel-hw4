@@ -43,11 +43,13 @@ double Tfija = 10; //temperature de frontera fija
 double anterior[N][N];
 double actual[N][N];
 
+int n_steps = 2000;
+
 
 int main() 
 {
 	funcion_10fijo();
-	funcion_abierta();
+	// funcion_abierta();
 	// funcion_periodica();
 	return 0;
 }
@@ -69,15 +71,18 @@ void funcion_10fijo(){
             }
         }
     }
-    
-    ofstream data_file;
-    string file_name="fijo_datos.txt";
-    data_file.open(file_name);
 
     //equilibrio
     double dif = 1;
     double dif_equilibrio = 0.01;
-    while(abs(dif)>dif_equilibrio){
+    // while(abs(dif)>dif_equilibrio){
+    ofstream data_file;
+    for (k=0;k<=n_steps;k++){
+        
+        if (k==0 || k==1000 || k==2000){
+            string file_name="fijo_"+to_string(k)+".txt";
+            data_file.open(file_name);
+        }
         // ecuacion diferencial parcial
         for(i=0; i<N-1; i++){
             for(j=0; j<N-1; j++){
@@ -91,16 +96,20 @@ void funcion_10fijo(){
                         actual[i][j] = Tvarilla;
                     }
                     else if (i>0 && j>0) {
-                         cout << "eqn_dif: "<<eqn_dif << endl;
+                        //  cout << "eqn_dif: "<<eqn_dif << endl;
                         actual[i][j] = alpha*(anterior[i+1][j]+anterior[i][j+1])+(1-4*alpha)*anterior[i][j]+alpha*(anterior[i-1][j]+anterior[i][j-1]);
                     }
                 }
-                data_file << anterior[i][j] << ",";
+                if (k==0 || k==1000 || k==2000){
+                    data_file << anterior[i][j] << ",";
+                }
             }
-            data_file << endl;
+            if (k==0 || k==1000 || k==2000){
+                data_file << endl;
+            }
         }
         dif = promedio(actual) - promedio(anterior);
-        cout << "Diferencia: "<<dif << endl;
+        // cout << "Diferencia: "<<dif << endl;
         //asignar valores de actual anterior para proxima iteracion 
         // memcpy(anterior,actual,sizeof(actual));
          for(i=0; i<N-1; i++){
@@ -108,9 +117,11 @@ void funcion_10fijo(){
                 anterior[i][j] = actual[i][j];
             }
          }
+         if (k==0 || k==1000 || k==2000){
+                 data_file.close();
+            }
     }
-
-    data_file.close();
+    
 
 }
 

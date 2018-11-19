@@ -49,12 +49,12 @@ int main()
         double y_prime = V0*sin(PI*ang/180);
 
         ofstream data_file;
-        string file_name="proyectil_"+to_string(ang)+"grados.csv";
+        string file_name="proyectil_"+to_string(ang)+"grados.txt";
         data_file.open(file_name);
 
         while(y>=0)
         {
-            data_file << t <<"," << x << "," << y << "," << x_prime << "," << x_prime <<endl;
+            data_file << t <<" " << x << " " << y << " " << x_prime << " " << y_prime <<endl;
 
             // kutta x
             double k1x=funcion_xprime(t,x,x_prime);
@@ -91,7 +91,7 @@ int main()
             y_prime = y_prime + h*promedio_kyprime;
             double V = funcion_V(x_prime,y_prime);
             t=t+h;
-            
+
             // debugging
             // cout<< "Tiempo: "<< t <<endl;
             // cout<< "x: "<< x <<endl;
