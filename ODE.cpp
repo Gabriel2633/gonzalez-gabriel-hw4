@@ -33,7 +33,6 @@ int main()
     double y=0;
     int ang = 45; //angulo
     double V0=300;
-    int n_steps = 100000;
     int i=0;
 
     double x_prime = V0*cos(PI*ang/180);
