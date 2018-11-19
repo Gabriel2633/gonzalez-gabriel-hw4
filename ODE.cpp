@@ -26,7 +26,7 @@ int main()
 {
     // condiciones iniciales
 
-    double h=0.01;
+    double h=0.005;
     double t=0;
     double X=0;
     double x=0;
