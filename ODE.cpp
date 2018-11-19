@@ -33,14 +33,16 @@ int main()
     double y=0;
     int ang = 45; //angulo
     double V0=300;
-    double V = V0;
+    // double V = V0;
     int n_steps = 100000;
     int i=0;
 
+    double x_prime = V0*cos(PI*ang/180);
+    double y_prime = V0*sin(PI*ang/180);
+
     while(y>=0)
     {
-        double x_prime = V*cos(PI*ang/180);
-        double y_prime = V*sin(PI*ang/180);
+
 
         // kutta x
         double k1x=funcion_xprime(t,x,x_prime);
@@ -75,7 +77,7 @@ int main()
         y = y + h*promedio_ky;
         x_prime = x_prime + h*promedio_kxprime;
         y_prime = y_prime + h*promedio_kyprime;
-        V = funcion_V(x_prime,y_prime);
+        double V = funcion_V(x_prime,y_prime);
         t=t+h;
 
         cout<< "Tiempo: "<< t <<endl;
