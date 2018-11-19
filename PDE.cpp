@@ -16,7 +16,10 @@ using namespace std;
 
 #define N 50 //tamaño de matrix
 
+void funcion_10fijo();
+void funcion_abierta();
 double promedio(double matrix[N][N]);
+
 
 //constantes
 double k=1.62;   // conductividad termica
@@ -33,8 +36,8 @@ double delta_x = 1; //variacion espacial (x,y)
 double tau = 0.001; //variacion temporal (t)
 double alpha =(tau*v)/(delta_x*delta_x);
 
-double Tvarilla = 373.15; //temperatura de varilla
-double Tfija = 283.15; //temperature de frontera fija
+double Tvarilla = 100; //temperatura de varilla
+double Tfija = 10; //temperature de frontera fija
 
 
 double anterior[N][N];
@@ -43,14 +46,22 @@ double actual[N][N];
 
 int main() 
 {
+	funcion_10fijo();
+	funcion_abierta();
+	// funcion_periodica();
+	return 0;
+}
 
-    
-    int i, j, k;
+void funcion_10fijo(){
+
+     int i, j, k;
     //condiciones de frontera
     for(i=0; i<N; i++){
         for(j=0; j<N; j++){
             double eqn_dif = pow(i*delta_x-0.5*l,2) + pow(j*delta_x-0.5*l,2);
-            if(eqn_dif<pow(d/2,2)){
+            //  cout << "eqn_dif: "<<eqn_dif << endl;
+            //  cout << "pow(N/2,2): "<<pow(N/2,2) << endl;
+            if(eqn_dif<=pow(N/2,2)){
                 anterior[i][j] = Tvarilla;
             }
             else {
@@ -60,12 +71,12 @@ int main()
     }
     
     ofstream data_file;
-    string file_name="fijo.txt";
+    string file_name="fijo_datos.txt";
     data_file.open(file_name);
 
     //equilibrio
     double dif = 1;
-    double dif_equilibrio = 0.0001;
+    double dif_equilibrio = 0.01;
     while(abs(dif)>dif_equilibrio){
         // ecuacion diferencial parcial
         for(i=0; i<N-1; i++){
@@ -74,10 +85,13 @@ int main()
                     actual[i][j] = Tfija;
                 } else {
                     double eqn_dif = pow(i*delta_x-0.5*l,2) + pow(j*delta_x-0.5*l,2);
-                    if (eqn_dif < pow(d/2,2)){
+                    // cout << "eqn_dif: "<<eqn_dif << endl;
+
+                    if (eqn_dif <= pow(d/2,2)){
                         actual[i][j] = Tvarilla;
                     }
-                    else {
+                    else if (i>0 && j>0) {
+                         cout << "eqn_dif: "<<eqn_dif << endl;
                         actual[i][j] = alpha*(anterior[i+1][j]+anterior[i][j+1])+(1-4*alpha)*anterior[i][j]+alpha*(anterior[i-1][j]+anterior[i][j-1]);
                     }
                 }
@@ -86,12 +100,88 @@ int main()
             data_file << endl;
         }
         dif = promedio(actual) - promedio(anterior);
+        cout << "Diferencia: "<<dif << endl;
         //asignar valores de actual anterior para proxima iteracion 
-        memcpy(anterior,actual,sizeof(actual));
+        // memcpy(anterior,actual,sizeof(actual));
+         for(i=0; i<N-1; i++){
+            for(j=0; j<N-1; j++){
+                anterior[i][j] = actual[i][j];
+            }
+         }
     }
-    
+
+    data_file.close();
 
 }
+
+void funcion_abierta(){
+
+     int i, j, k;
+    //condiciones de frontera
+    for(i=0; i<N; i++){
+        for(j=0; j<N; j++){
+            double eqn_dif = pow(i*delta_x-0.5*l,2) + pow(j*delta_x-0.5*l,2);
+            //  cout << "eqn_dif: "<<eqn_dif << endl;
+            //  cout << "pow(N/2,2): "<<pow(N/2,2) << endl;
+            if(eqn_dif<=pow(N/2,2)){
+                anterior[i][j] = Tvarilla;
+            }
+            else {
+                anterior[i][j] = Tfija;
+            }
+        }
+    }
+    
+    ofstream data_file;
+    string file_name="abierta_datos.txt";
+    data_file.open(file_name);
+
+    //equilibrio
+    double dif = 1;
+    double dif_equilibrio = 0.01;
+    while(abs(dif)>dif_equilibrio){
+        // ecuacion diferencial parcial
+        for(i=0; i<N-1; i++){
+            for(j=0; j<N-1; j++){
+                if (i==0 || i==N-1 || j==0 || j==N-1 ){
+                    for (int i = 0; i < N; ++i)
+					{
+						actual[0][i]=actual[1][i];
+						actual[N-1][i]=actual[N-2][i];
+						actual[i][0]=actual[i][1];
+						actual[i][N-1]=actual[i][N-2];
+					}
+                } else {
+                    double eqn_dif = pow(i*delta_x-0.5*l,2) + pow(j*delta_x-0.5*l,2);
+                    // cout << "eqn_dif: "<<eqn_dif << endl;
+
+                    if (eqn_dif <= pow(d/2,2)){
+                        
+                    }
+                    else if (i>0 && j>0) {
+                         cout << "eqn_dif: "<<eqn_dif << endl;
+                        actual[i][j] = alpha*(anterior[i+1][j]+anterior[i][j+1])+(1-4*alpha)*anterior[i][j]+alpha*(anterior[i-1][j]+anterior[i][j-1]);
+                    }
+                }
+                data_file << anterior[i][j] << ",";
+            }
+            data_file << endl;
+        }
+        dif = promedio(actual) - promedio(anterior);
+        cout << "Diferencia: "<<dif << endl;
+        //asignar valores de actual anterior para proxima iteracion 
+        // memcpy(anterior,actual,sizeof(actual));
+         for(i=0; i<N-1; i++){
+            for(j=0; j<N-1; j++){
+                anterior[i][j] = actual[i][j];
+            }
+         }
+    }
+
+    data_file.close();
+
+} 
+
 
 double promedio(double matrix[N][N])
 {
