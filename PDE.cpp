@@ -15,6 +15,9 @@
 using namespace std;
 
 #define N 50 //tamaño de matrix
+
+double promedio(double matrix[N][N]);
+
 //constantes
 double k=1.62;   // conductividad termica
 double cp=820; // calor especifico
@@ -82,10 +85,9 @@ int main()
             }
             data_file << endl;
         }
-
+        dif = promedio(actual) - promedio(anterior);
         //asignar valores de actual anterior para proxima iteracion 
         memcpy(anterior,actual,sizeof(actual));
-        dif = promedio(actual) - promedio(anterior);
     }
     
 
