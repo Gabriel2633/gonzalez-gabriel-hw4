@@ -85,8 +85,18 @@ int main()
 
         //asignar valores de actual anterior para proxima iteracion 
         memcpy(anterior,actual,sizeof(actual));
+        dif = promedio(actual) - promedio(anterior);
     }
     
 
+}
 
+double promedio(double matrix[N][N])
+{
+    double sum = 0;
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            sum += matrix[i][j];
+
+    return sum / (N * N);
 }
