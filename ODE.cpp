@@ -7,6 +7,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -38,8 +40,12 @@ int main()
     double x_prime = V0*cos(PI*ang/180);
     double y_prime = V0*sin(PI*ang/180);
 
+    ofstream data45;
+    data45.open("proyectil_45grados.csv");
+
     while(y>=0)
     {
+        data45 << t <<"," << x << "," << y << "," << x_prime << "," << x_prime <<endl;	
 
 
         // kutta x
@@ -79,10 +85,13 @@ int main()
         t=t+h;
 
         cout<< "Tiempo: "<< t <<endl;
-        cout<< "Distancia: "<< x <<endl;
+        cout<< "x: "<< x <<endl;
         cout<< "y : "<< y <<endl;
         cout<< "Velocidad: "<< V <<endl;
     }
+
+    cout<< "Distancia Total Recorrida: "<< setprecision (2) << fixed << x <<endl;
+    data45.close();
 
 }
 
