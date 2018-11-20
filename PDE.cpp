@@ -44,7 +44,7 @@ double Tfija = 10; //temperature de frontera fija
 double anterior[N][N];
 double actual[N][N];
 
-int n_steps = 2000;
+int n_steps = 20000;
 
 
 int main() 
@@ -78,6 +78,8 @@ void funcion_10fijo(){
     double dif_equilibrio = 0.01;
     // while(abs(dif)>dif_equilibrio){
     ofstream data_file;
+    ofstream promedio_file;
+    promedio_file.open("fijo_promedio.txt");
     for (k=0;k<=n_steps;k++){
         
         if (k==0 || k==1000 || k==2000){
@@ -109,7 +111,12 @@ void funcion_10fijo(){
                 data_file << endl;
             }
         }
-        dif = promedio(actual) - promedio(anterior);
+        if (k==0 || k==1000 || k==2000){
+                 data_file.close();
+        }
+        double promedio_anterior = promedio(anterior);
+        promedio_file << k*tau <<" " << promedio_anterior << endl;
+        dif = promedio(actual) - promedio_anterior;
         // cout << "Diferencia: "<<dif << endl;
         //asignar valores de actual anterior para proxima iteracion 
         // memcpy(anterior,actual,sizeof(actual));
@@ -118,11 +125,9 @@ void funcion_10fijo(){
                 anterior[i][j] = actual[i][j];
             }
          }
-         if (k==0 || k==1000 || k==2000){
-                 data_file.close();
-            }
+         
     }
-    
+    promedio_file.close();
 
 }
 
@@ -149,6 +154,8 @@ void funcion_abierta(){
     double dif_equilibrio = 0.01;
     // while(abs(dif)>dif_equilibrio){
     ofstream data_file;
+    ofstream promedio_file;
+    promedio_file.open("abierta_promedio.txt");
     for (k=0;k<=n_steps;k++){
         
         if (k==0 || k==1000 || k==2000){
@@ -186,6 +193,8 @@ void funcion_abierta(){
                 data_file << endl;
             }
         }
+        double promedio_anterior = promedio(anterior);
+        promedio_file << k*tau <<" " << promedio_anterior << endl;
         dif = promedio(actual) - promedio(anterior);
         // cout << "Diferencia: "<<dif << endl;
         //asignar valores de actual anterior para proxima iteracion 
@@ -199,6 +208,7 @@ void funcion_abierta(){
                  data_file.close();
             }
     }
+    promedio_file.close();
 
 } 
 
@@ -228,7 +238,7 @@ void funcion_periodica(){
     for (k=0;k<=n_steps;k++){
         
         if (k==0 || k==1000 || k==2000){
-            string file_name="abierta_"+to_string(k)+".txt";
+            string file_name="periodica_"+to_string(k)+".txt";
             data_file.open(file_name);
         }
         // ecuacion diferencial parcial
